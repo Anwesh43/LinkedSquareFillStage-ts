@@ -70,3 +70,61 @@ class LSFAnimator {
         }
     }
 }
+
+class LSFNode {
+
+    next : LSFNode
+
+    prev : LSFNode
+
+    state : LSFState = new LSFState()
+
+    constructor(private i : number) {
+        this.addNeighbor()
+    }
+
+    addNeighbor() {
+        if (this.i < LSF_NODES - 1) {
+            this.next = new LSFNode(this.i + 1)
+            this.next.prev = this
+        }
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        context.fillStyle = '#1abc9c'
+        const size : number = Math.min(w, h)/LSF_NODES
+        context.save()
+        context.translate(this.i * size, this.i * size)
+        context.save()
+        context.translate(size, size)
+        for (var i = 0; i < 2; i++) {
+            const xy : number = (-size + size * this.state.scale) * (1 - i)
+            const sf : number = (1 - i) + (this.state.scale) * (2 * i - 1)
+            context.save()
+            context.fillRect(xy, xy, size * sf,  size * sf)
+            context.restore()
+        }
+        context.restore()
+        context.restore()
+    }
+
+    update(stopcb : Function) {
+        this.state.update(stopcb)
+    }
+
+    startUpdating(startcb : Function) {
+        this.state.startUpdating(startcb)
+    }
+
+    getNext(dir : number, cb : Function) {
+        var curr : LSFNode = this.prev
+        if (dir == 1) {
+            curr = this.next
+        }
+        if (curr) {
+            return curr
+        }
+        cb()
+        return this
+    }
+}
