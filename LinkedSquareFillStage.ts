@@ -38,6 +38,12 @@ class LinkedSquareFillStage {
             })
         }
     }
+
+    static init() {
+        const curr : LinkedSquareFillStage = new LinkedSquareFillStage()
+        curr.render()
+        curr.handleTap()
+    }
 }
 
 class LSFState {
