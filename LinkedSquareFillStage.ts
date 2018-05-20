@@ -5,6 +5,10 @@ class LinkedSquareFillStage {
 
     context : CanvasRenderingContext2D
 
+    linkedSquareFill : LinkedSquareFill = new LinkedSquareFill()
+
+    animator : LSFAnimator = new LSFAnimator()
+
     constructor() {
         this.initCanvas()
     }
@@ -19,6 +23,20 @@ class LinkedSquareFillStage {
     render() {
         this.context.fillStyle = '#212121'
         this.context.fillRect(0, 0, w, h)
+        this.linkedSquareFill.draw(this.context)
+    }
+
+    handleTap() {
+        this.canvas.onmousedown = () => {
+            this.linkedSquareFill.startUpdating(() => {
+                this.animator.start(() => {
+                    this.render()
+                    this.linkedSquareFill.update(() => {
+                        this.animator.stop()
+                    })
+                })
+            })
+        }
     }
 }
 
