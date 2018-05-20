@@ -116,7 +116,7 @@ class LSFNode {
 
     draw(context : CanvasRenderingContext2D) {
         context.fillStyle = '#1abc9c'
-        const size : number = Math.min(w, h)/LSF_NODES
+        const size : number = Math.min(w, h)/(LSF_NODES + 1)
         context.save()
         context.translate(this.i * size, this.i * size)
         context.save()
